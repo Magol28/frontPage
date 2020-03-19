@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import Photo from './componets/image'
+import Menu from './componets/menu';
+import Item from './componets/list';
 import './App.css';
+const ip = 'localhost';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+class App extends Component {
+  constructor(){
+    super();
+    this.state={
+      image:'',
+      images:[],
+      listImage:null
+      
+  }
+  fetch('http://localhost:3000/images').then(response => response.json())
+  .then(info=>{
+    this.state.images= info;
+    this.setState({image:'http://localhost:3000'+info[0].location})
+    const imagesList=  this.state.images.map((number) =>
+    <Item  change={this.change.bind(this)} data={number}></Item>);
+    this.setState({listImage:imagesList})
+  })
+  }
+  change(image){
+  this.setState({image})
+  }
+  render() {
+  return(
+    <div  class="container-fluid">
+    <Menu ></Menu>
+      <div class="row">
+        <section className="col-3">
+        {this.state.listImage}
+        </section>
+        <section   className="col-9">
+        <Photo name= {this.state.image}></Photo>
+        </section>
+      </div> 
     </div>
-  );
+  )}
 }
-
 export default App;
