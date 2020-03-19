@@ -14,10 +14,10 @@ class App extends Component {
       listImage:null
       
   }
-  fetch('http://localhost:3000/images').then(response => response.json())
+  fetch('https://coronaback.herokuapp.com/images').then(response => response.json())
   .then(info=>{
     this.state.images= info;
-    this.setState({image:'http://localhost:3000'+info[0].location})
+    this.setState({image:'https://coronaback.herokuapp.com/'+info[0].location})
     const imagesList=  this.state.images.map((number) =>
     <Item  change={this.change.bind(this)} data={number}></Item>);
     this.setState({listImage:imagesList})
